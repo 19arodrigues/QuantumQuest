@@ -10,6 +10,7 @@ This project is for a Physics and Computer Science Senior Project. The wizard, Q
 3. Run game.py
 
 *Run through a terminal
+
 4. $ cd ~/.../QuantumQuest
 5. $ python game.py
 
