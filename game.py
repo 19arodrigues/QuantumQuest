@@ -1,3 +1,19 @@
+import subprocess
+import sys
+
+try:
+    import pygame
+except ImportError:
+    print("pygame not found. Installing...")
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "pygame"])
+    import pygame
+try:
+    import qiskit
+except ImportError:
+    print("qiskit not found. Installing...")
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "qiskit"])
+    import qiskit
+
 import pygame
 import time
 

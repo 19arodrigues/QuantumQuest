@@ -27,7 +27,7 @@ class Level(State):
         self.game = game
         self.levelState = 0
         self.game.actions["toggleCircuitGrid"] = False
-        self.level = 0
+        self.level = 3
         self.loadResources()
 
         # sprite groups setup
@@ -63,6 +63,10 @@ class Level(State):
         self.quantumComputer = QuantumComputer(self.stateMarkers, self.circuitGrid)
         # self.moving_sprites = pygame.sprite.Group()
         # self.moving_sprites.add(self.stateMarkers.markers)
+
+        # Debug
+        self.lastCollision = None
+        self.lastPlayerCollision = None
 
     def loadResources(self):
         self.csvLayouts = {
@@ -346,13 +350,13 @@ class Level(State):
                             elif style == 'interactions':
                                 interaction = 'none'
                                 if col_index == 15 and row_index == 3: interaction = 'H Gate' # H Gate
-                                elif col_index == 15 and row_index == 10: interaction = 'X Gate' # X Gate
+                                elif (col_index == 15 and row_index == 10) or (col_index == 19 and row_index == 8): interaction = 'X Gate' # X Gate
                                 elif (col_index == 4 and row_index == 9) or (col_index == 6 and row_index == 11): interaction = 'Quantum Pressure Plate'
                                 elif col_index == 13 and row_index == 14: interaction = 'door 1'
                                 elif col_index == 17 and row_index == 14: interaction = 'door 2'
-                                elif 20 <= col_index <= 23 and 7 <= row_index <= 8: 
+                                elif 20 <= col_index <= 23 and 6 <= row_index <= 7: 
                                     interaction = 'toggle bridge'
-                                    dummy = Tile((x, y), [self.visible_sprites], [self.visibleSprites, self.interactableSprites], 'stairs down', self.level, tilesGraphics[1]['qgates'][int(val)], 1)
+                                    dummy = Tile((x, y), [self.visible_sprites], [self.visibleSprites, self.interactableSprites], interaction, self.level, tilesGraphics[1]['qgates'][int(val)], 1)
                                     dummy.invisible = True
                                 elif col_index == 24 and 6 <= row_index <= 7: interaction = 'stairs down'
                                 elif 25 <= col_index <=26 and 6 <= row_index <= 7:
@@ -421,7 +425,9 @@ class Level(State):
             self.player.enabled_movement = False
         else: 
             self.player.enabled_movement = True
-            
+        # if self.lastPlayerCollision is not None and self.lastCollision is not None:
+        #         pygame.draw.rect(window, (0, 255, 0), self.lastPlayerCollision, 2)
+        #         pygame.draw.rect(window, (0, 0, 255), self.lastCollision, 2)
 
     def levelLogic(self):
         if self.level == 0:
@@ -432,18 +438,23 @@ class Level(State):
                         self.levelUI.updateCount('X', 1)
                         self.player.quantumSpellBook['X'] += 1
                     elif sprite.spriteType == 'void':
-                        if self.player.superposition:
-                            for superpositionSprite in self.player.superpositionSprites:
-                                if sprite.hitbox.colliderect(superpositionSprite.hitbox):
-                                    print("superposed collided")
-                                    self.player.respawn(self.levelProperties[self.level]["spawn point"])
-                        else: 
+                        if not self.player.superposition:
+                            # print(f"player coord: {self.player.rect.topleft}")
+                            # print(f"void coord: {sprite.hitbox.topleft}")
                             self.player.respawn(self.levelProperties[self.level]["spawn point"])
-                            print("collided")
+                            # self.lastCollision = sprite.rect
+                            # self.lastPlayerCollision = self.player.rect.copy()
+                            # print("collided")
                     elif sprite.spriteType == 'stairs down' and not self.player.superposition:
                         self.levelUI.resetCount()
                         self.level = 1
                         self.loadLevel()
+                if self.player.superposition:
+                    for superpositionSprite in self.player.superpositionSprites:
+                        print(sprite.hitbox.colliderect(superpositionSprite.hitbox))
+                        if sprite.hitbox.colliderect(superpositionSprite.hitbox):
+                            print("superposed collided")
+                            self.player.respawn(self.levelProperties[self.level]["spawn point"])
         elif self.level == 1:
             self.levelProperties[self.level]['progress'] = 1 if self.player.rect.topleft[0] <= 400 else 0
             for sprite in self.interactableSprites:
@@ -535,20 +546,20 @@ class Level(State):
                         self.levelUI.updateCount('H', 1)
                         self.player.quantumSpellBook['H'] += 1
                     elif sprite.spriteType == 'door 1' or sprite.spriteType == 'door 2':
-                        print("collided w door")
-                        self.levelUI.resetCount()
-                        self.level = 2
-                        self.loadLevel()
+                        pass
                     elif sprite.spriteType == 'stairs up':
                         pass
                     elif sprite.spriteType == 'void':
-                        if self.player.superposition:
-                            for superpositionSprite in self.player.superpositionSprites:
-                                if sprite.hitbox.colliderect(superpositionSprite.hitbox):
-                                    self.player.respawn(self.levelProperties[self.level]["spawn point"])
-                        else: self.player.respawn(self.levelProperties[self.level]["spawn point"])
-
+                        if not self.player.superposition:
+                            self.player.respawn(self.levelProperties[self.level]["spawn point"])
+                    elif sprite.spriteType == 'void_toggle' and not self.levelProperties[self.level]["platform toggle"]:
+                        if not self.player.superposition:
+                            self.player.respawn(self.levelProperties[self.level]["spawn point"])
                 if self.player.superposition:
+                    for superpositionSprite in self.player.superpositionSprites:
+                        if sprite.hitbox.colliderect(superpositionSprite.hitbox):
+                            if sprite.spriteType == 'void':
+                                self.player.respawn(self.levelProperties[self.level]["spawn point"])
                     if sprite.spriteType == 'Quantum Pressure Plate':
                         sprite.properties['pressed'] = False
                         for superpositionSprite in self.player.superpositionSprites:
@@ -556,15 +567,18 @@ class Level(State):
                                 sprite.properties['pressed'] = True
                                 break
                         sprite.image = self.tilesGraphics[1]['qgates'][31 if sprite.properties['pressed'] else 30]
-
-                        pressurePlateSprites = [sprite for sprite in self.interactableSprites if sprite.spriteType == 'Quantum Pressure Plate']
-                        if pressurePlateSprites[0].properties['pressed'] and pressurePlateSprites[1].properties['pressed']:
-                            self.levelProperties[self.level]["stairs down unlocked"] = True
-                            for sprite in self.interactableSprites:
-                                if sprite.spriteType == 'toggle bridge':
-                                    sprite.invisible = False
-                                if sprite.spriteType == 'void_toggle':
-                                    sprite.kill()
+                pressurePlateSprites = [sprite for sprite in self.interactableSprites if sprite.spriteType == 'Quantum Pressure Plate']
+                if 'pressed' in pressurePlateSprites[0].properties and 'pressed' in pressurePlateSprites[1].properties:
+                    if pressurePlateSprites[0].properties['pressed'] and pressurePlateSprites[1].properties['pressed']:
+                        self.levelProperties[self.level]["stairs down unlocked"] = True
+                        self.levelProperties[self.level]["platform toggle"] = True
+                        for sprite in self.interactableSprites:
+                            if sprite.spriteType == 'toggle bridge':
+                                sprite.invisible = False
+                            if sprite.spriteType == 'void_toggle':
+                                sprite.kill()
+                if sprite.spriteType == 'toggle bridge' and not self.levelProperties[self.level]["platform toggle"]:
+                    sprite.invisible = True
 
             
 

@@ -216,11 +216,17 @@ class Player(Entity):
         distance = 65
         collapsedState = self.nonCollidedPossibleState()
         oldPos = self.hitbox.center
-        if collapsedState != -1:
-            self.hitbox.x += distance * (collapsedState%2 * (2-collapsedState))
-            self.hitbox.y += distance * (-1 * ((collapsedState+1)%2) * (1-collapsedState))
-            self.rect.center = self.hitbox.center
-        else: self.rect.center = oldPos
+        if self.game.stateStack[-1].levelProperties[self.game.stateStack[-1].level]["qubit amount"] == 1:
+            if collapsedState != -1:
+                self.hitbox.y -= distance * (1 - 2*collapsedState)
+                self.rect.center = self.hitbox.center
+            else: self.rect.center = oldPos
+        elif self.game.stateStack[-1].levelProperties[self.game.stateStack[-1].level]["qubit amount"] == 2:
+            if collapsedState != -1:
+                self.hitbox.x += distance * (collapsedState%2 * (2-collapsedState))
+                self.hitbox.y += distance * (-1 * ((collapsedState+1)%2) * (1-collapsedState))
+                self.rect.center = self.hitbox.center
+            else: self.rect.center = oldPos
 
         if self.collided: self.rect.center = oldPos
         for sprite in self.superpositionSprites:

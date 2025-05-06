@@ -67,4 +67,9 @@ class Camera(pygame.sprite.Group):
 
             # sprite.rect.topleft = offset_pos
             # inside your game loop, after drawing your sprites:
-            pygame.draw.rect(window, (255, 0, 0), sprite.rect, 2)  # red outline with thickness 2
+            # pygame.draw.rect(window, (255, 0, 0), sprite.rect, 2)  # red outline with thickness 2
+        
+        # for sprite in self.level.interactableSprites:
+        #     if sprite.spriteType == "void":
+
+                # pygame.draw.rect(window, (255, 0, 0), sprite.rect, 2)
