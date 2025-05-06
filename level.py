@@ -27,7 +27,7 @@ class Level(State):
         self.game = game
         self.levelState = 0
         self.game.actions["toggleCircuitGrid"] = False
-        self.level = 3
+        self.level = 0
         self.loadResources()
 
         # sprite groups setup
