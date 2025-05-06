@@ -141,7 +141,6 @@ class Level(State):
                 }
         }
 
-
         self.tilesGraphics = {
             # Level 0
             0: {
@@ -459,7 +458,7 @@ class Level(State):
                         self.player.quantumSpellBook['H'] += 2
                     elif sprite.spriteType == 'stairs down' and self.levelProperties[1]["stairs down unlocked"]:
                         self.levelUI.resetCount()
-                        self.level = 2
+                        self.level = 3
                         self.loadLevel()
                 if self.player.superposition:
                     if sprite.spriteType == 'Quantum Pressure Plate':
