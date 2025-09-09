@@ -16,7 +16,7 @@ This project is for a Physics and Computer Science Senior Project. The wizard, Q
 
 ## In game images (v0.8)
 Inline-style: 
-![alt text](https://github.com/19arodrigues/QuantumQuest/assets/images/QQRM1.png "Logo Title Text 1")
+![alt text](https://github.com/19arodrigues/QuantumQuest/blob/a7558e79ddf325bc85e05ada711f7d621b25cce4/assets/images/QQRM1.png "QQRM1")
 
 ## Roadmap
 - Export the game as a single executable
