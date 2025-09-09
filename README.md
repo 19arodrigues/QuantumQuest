@@ -18,13 +18,13 @@ This project is for a Physics and Computer Science Senior Project. The wizard, Q
 1 Qubit Spellbuilder
 ![alt text](https://github.com/19arodrigues/QuantumQuest/blob/a7558e79ddf325bc85e05ada711f7d621b25cce4/assets/images/QQRM1.png "QQRM1")
 
-1 Qubit Spellbuilder
+Q's Cat's Tutorials
 ![alt text](https://github.com/19arodrigues/QuantumQuest/blob/a7558e79ddf325bc85e05ada711f7d621b25cce4/assets/images/QQRM2.png "QQRM2")
 
-1 Qubit Spellbuilder
+2 Qubit Spellbuilder
 ![alt text](https://github.com/19arodrigues/QuantumQuest/blob/a7558e79ddf325bc85e05ada711f7d621b25cce4/assets/images/QQRM3.png "QQRM3")
 
-1 Qubit Spellbuilder
+Teleportation Puzzle
 ![alt text](https://github.com/19arodrigues/QuantumQuest/blob/a7558e79ddf325bc85e05ada711f7d621b25cce4/assets/images/QQRM4.png "QQRM4")
 
 ## Roadmap
