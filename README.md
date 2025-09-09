@@ -14,6 +14,9 @@ This project is for a Physics and Computer Science Senior Project. The wizard, Q
 4. $ cd ~/.../QuantumQuest
 5. $ python game.py
 
+## In game images (v0.8)
+
+
 ## Roadmap
 - Export the game as a single executable
 - Add more QM principles (Entanglement, ...)
