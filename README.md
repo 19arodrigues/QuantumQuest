@@ -15,8 +15,17 @@ This project is for a Physics and Computer Science Senior Project. The wizard, Q
 5. $ python game.py
 
 ## In game images (v0.8)
-Inline-style: 
+1 Qubit Spellbuilder
 ![alt text](https://github.com/19arodrigues/QuantumQuest/blob/a7558e79ddf325bc85e05ada711f7d621b25cce4/assets/images/QQRM1.png "QQRM1")
+
+1 Qubit Spellbuilder
+![alt text](https://github.com/19arodrigues/QuantumQuest/blob/a7558e79ddf325bc85e05ada711f7d621b25cce4/assets/images/QQRM1.png "QQRM2")
+
+1 Qubit Spellbuilder
+![alt text](https://github.com/19arodrigues/QuantumQuest/blob/a7558e79ddf325bc85e05ada711f7d621b25cce4/assets/images/QQRM1.png "QQRM3")
+
+1 Qubit Spellbuilder
+![alt text](https://github.com/19arodrigues/QuantumQuest/blob/a7558e79ddf325bc85e05ada711f7d621b25cce4/assets/images/QQRM1.png "QQRM4")
 
 ## Roadmap
 - Export the game as a single executable
